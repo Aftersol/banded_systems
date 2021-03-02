@@ -3,9 +3,6 @@
  * It is intentionally written in C89 for portability purposes.
  */
 
-#include "bandedSystem.h"
-/*#include "file_io.h"*/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -58,14 +55,25 @@ int main(int argc, char* argv[])
     
     /* Solves the banded matrix */
 
+    /*for j in range(1,4):
+        m= c[j]/a[j-1]
+        a[j] -= m*d[j-1]
+        b[j] -= m*b[j-1]
+        
+    x[3]=b[3]/a[3]
+    for j in range(2,-1-1):
+        x[j] = (b[j]-d[j]*x[j+1])/a[j]
+    end
+*/
+
     memcpy(workMatrix, bandedMatrix, matSize * matSize * sizeof(double));
 
-    /*for (size_t j = 0; j < matSize; j++)
+    for (size_t j = 0; j < matSize; j++)
     {
         size_t m = 
         printf();
 
-    }*/
+    }
 
     /* Export result CSV */
 
