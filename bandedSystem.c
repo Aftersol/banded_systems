@@ -186,7 +186,7 @@ int main(int argc, char* argv[])
                 for (size_t i = 0; i < matSize; i++)
                     fprintf(solvedTable, "X_%llu,", i);
 
-                fprintf(solvedTable, "Answer, Y,\n");
+                fprintf(solvedTable, "Answer,Constant,Y\n");
 
 
                 /* O(n^2) -- This loop writes the results of solving the equation to the CSV file -- */
@@ -197,7 +197,7 @@ int main(int argc, char* argv[])
                         fprintf(solvedTable, "%f,", bandedMatrix[x + (matSize * y)]);
                     }
 
-                    fprintf(solvedTable, "%f,Y_%lu,\n", answers[x], x);
+                    fprintf(solvedTable, "%f,%f,Y_%lu,\n", answers[x], constants[x], x);
                 }
                 printf("Writing to %s succeeded", numStr);
                 fclose(solvedTable);
