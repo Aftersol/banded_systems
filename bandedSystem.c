@@ -88,7 +88,6 @@ int main(int argc, char* argv[])
         m= c[j]/a[j-1]
         a[j] -= m*d[j-1]
         b[j] -= m*b[j-1]
-
     x[n-1]=b[n-1]/a[n-1]
     for j in range(2,-1-1):
         x[j] = (b[j]-d[j]*x[j+1])/a[j]
@@ -120,6 +119,12 @@ int main(int argc, char* argv[])
             fprintf(debugFile, "\n");
         }
 
+        for (size_t y = 0; y < matSize; y++)
+        {
+            fprintf(debugFile, "%f ", workConstants[y]);
+        }
+        fprintf(debugFile, "\n");
+
         /* Back solving */
 
         for (size_t seek = matSize; seek > 0; seek--) /* seek > 0 prevents underflow */
@@ -128,16 +133,16 @@ int main(int argc, char* argv[])
             
             if (seek == matSize)
             {
-                answers[seekM1] = constants[seekM1] / workMatrix[(matSize * matSize) - 1];
-                fprintf(debugFile, "%f / %f = %f\n", constants[seekM1], workMatrix[(matSize * matSize) - 1], answers[seekM1]);
+                answers[seekM1] = workConstants[seekM1] / workMatrix[(matSize * matSize) - 1];
+                fprintf(debugFile, "%f / %f = %f\n", workConstants[seekM1], workMatrix[(matSize * matSize) - 1], answers[seekM1]);
             }
             else
             {
-                const size_t v = seekM1 + (seekM1 * matSize);
+                const size_t v = seek + (seekM1 * matSize);
                 answers[seekM1] =
-                    (workConstants[seekM1] - workMatrix[seekM1 + (seekM1 * matSize)] * answers[seek]) /
-                    workMatrix[seek + (seekM1 * matSize)];
-                fprintf(debugFile, "(%f - %f * %f) / %f = %f\n\n", workConstants[seekM1], workMatrix[seekM1 + (seekM1 * matSize)], answers[seek], workMatrix[seek + (seekM1 * matSize)], answers[seekM1]);
+                    (workConstants[seekM1] - workMatrix[seek + (seekM1 * matSize)] * answers[seek]) /
+                    workMatrix[seekM1 + (seekM1 * matSize)];
+                fprintf(debugFile, "(%f - %f * %f) / %f = %f\n\n", workConstants[seekM1], workMatrix[seek + (seekM1 * matSize)], answers[seek], workMatrix[seekM1 + (seekM1 * matSize)], answers[seekM1]);
             }
         }
     }
