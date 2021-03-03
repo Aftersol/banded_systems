@@ -1,4 +1,5 @@
 /.vscode
+/build
 /bandedSystem.h
 /file_io.h
 /main.cpp
