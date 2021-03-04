@@ -1,3 +1,3 @@
-# Banded Systems
+# Banded Systems of Equation Solver
 
 This program attempts to solve banded equation system then exports the result to CSV table format.
