@@ -46,7 +46,8 @@ int main(int argc, char* argv[])
         return ALLOCATION_ERROR;
 
 
-    for (size_t pos = 0; pos < 4; pos++)
+    size_t pos;
+    for (pos = 0; pos < 4; pos++)
     {
         workConstants[pos] = constants[pos];
         fprintf(debugFile, "%f\n", workConstants[pos]);
@@ -75,13 +76,19 @@ int main(int argc, char* argv[])
             seek++;
         }
     }
-    for (size_t y = 0; y < matSize; y++)
+
     {
-        for (size_t x = 0; x < matSize; x++)
-            fprintf(debugFile, "%f ", bandedMatrix[x + (matSize * y)]);
+        size_t y;
+        for (y = 0; y < matSize; y++)
+        {
+            size_t x;
+            for (x = 0; x < matSize; x++)
+                fprintf(debugFile, "%f ", bandedMatrix[x + (matSize * y)]);
+            fprintf(debugFile, "\n");
+        }
         fprintf(debugFile, "\n");
     }
-    fprintf(debugFile, "\n");
+
     /* Solves the banded matrix */
 
     /*for j in range(1,n):
@@ -102,7 +109,8 @@ int main(int argc, char* argv[])
     }
     else
     {
-        for (size_t seek = 0; seek < matSizeM1; seek++)
+        size_t seek, x, y;
+        for (seek = 0; seek < matSizeM1; seek++)
         {
             double m = workMatrix[seek + ((seek+1) * matSize)] / workMatrix[seek + (seek * matSize)];
 
@@ -112,14 +120,14 @@ int main(int argc, char* argv[])
 
         }
 
-        for (size_t y = 0; y < matSize; y++)
+        for (y = 0; y < matSize; y++)
         {
-            for (size_t x = 0; x < matSize; x++)
+            for (x = 0; x < matSize; x++)
                 fprintf(debugFile, "%f ", workMatrix[x + (matSize * y)]);
             fprintf(debugFile, "\n");
         }
 
-        for (size_t y = 0; y < matSize; y++)
+        for (y = 0; y < matSize; y++)
         {
             fprintf(debugFile, "%f ", workConstants[y]);
         }
@@ -127,7 +135,7 @@ int main(int argc, char* argv[])
 
         /* Back solving */
 
-        for (size_t seek = matSize; seek > 0; seek--) /* seek > 0 prevents underflow */
+        for (seek = matSize; seek > 0; seek--) /* seek > 0 prevents underflow */
         {
             const size_t seekM1 = seek - 1;
             
@@ -138,11 +146,18 @@ int main(int argc, char* argv[])
             }
             else
             {
-                const size_t v = seek + (seekM1 * matSize);
                 answers[seekM1] =
                     (workConstants[seekM1] - workMatrix[seek + (seekM1 * matSize)] * answers[seek]) /
                     workMatrix[seekM1 + (seekM1 * matSize)];
-                fprintf(debugFile, "(%f - %f * %f) / %f = %f\n\n", workConstants[seekM1], workMatrix[seek + (seekM1 * matSize)], answers[seek], workMatrix[seekM1 + (seekM1 * matSize)], answers[seekM1]);
+                fprintf(
+                    debugFile,
+                    "(%f - %f * %f) / %f = %f\n\n",
+                    workConstants[seekM1],
+                    workMatrix[seek + (seekM1 * matSize)],
+                    answers[seek],
+                    workMatrix[seekM1 + (seekM1 * matSize)],
+                    answers[seekM1]
+                );
             }
         }
     }
@@ -183,16 +198,18 @@ int main(int argc, char* argv[])
             solvedTable = fopen((const char*)numStr, "w");
             if (solvedTable)
             {
-                for (size_t i = 0; i < matSize; i++)
+                size_t i;
+                for (i = 0; i < matSize; i++)
                     fprintf(solvedTable, "X_%llu,", i);
 
                 fprintf(solvedTable, "Answer,Constant,Y\n");
 
+                size_t x, y;
 
                 /* O(n^2) -- This loop writes the results of solving the equation to the CSV file -- */
-                for (size_t x = 0; x < matSize; x++)
+                for (x = 0; x < matSize; x++)
                 {
-                    for (size_t y = 0; y < matSize; y++)
+                    for (y = 0; y < matSize; y++)
                     {
                         fprintf(solvedTable, "%f,", bandedMatrix[x + (matSize * y)]);
                     }
