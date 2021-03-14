@@ -104,9 +104,7 @@ int main(int argc, char* argv[])
     memcpy(workMatrix, bandedMatrix, matSize * matSize * sizeof(double));
 
     if (matSize == 1)
-    {
         answers[0] = workConstants[0] / workMatrix[0];
-    }
     else
     {
         size_t seek, x, y;
@@ -184,8 +182,11 @@ int main(int argc, char* argv[])
 
     while (serialNumber < SIZE_MAX)
     {
-        
-        snprintf((const char*)numStr, 511, "result_%lu.csv", (size_t)serialNumber);
+        #if __STDC_VERSION__ >= 199901L /* This filename writing line uses a C99 function less likely to induce a buffer overflow */
+        snprintf((const char*)numStr, 4095, "result_%lu.csv", (size_t)serialNumber);
+        #else
+        sprintf((const char*)numStr, "result_%lu.csv", (size_t)serialNumber)
+        #endif
 
         solvedTable = fopen((const char*)numStr, "r");
         if (solvedTable)
