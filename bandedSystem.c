@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
     if (!debugFile)
         return ALLOCATION_ERROR;
 
-    size_t matSize = 4; // constant value for testing purposes
+    size_t matSize = 4; /* constant value for testing purposes */
     const size_t matSizeM1 = matSize - 1;
 
     if (matSize == 0)
@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
 
     double* bandedMatrix = (double*)calloc(matSize * matSize, sizeof(double));
     double* workMatrix = (double*)calloc(matSize * matSize, sizeof(double));
-    double constants[4] = {6.0, 12.0, 18.0, 19.0}; // hardcoded constants for testing
+    double constants[4] = {6.0, 12.0, 18.0, 19.0}; /* hardcoded constants for testing */
     double* workConstants = (double*)calloc(matSize, sizeof(double));
     double* answers = (double*)calloc(matSize, sizeof(double));
     
