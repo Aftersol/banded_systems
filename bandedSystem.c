@@ -185,7 +185,7 @@ int main(int argc, char* argv[])
         #if __STDC_VERSION__ >= 199901L /* This filename writing line uses a C99 function less likely to induce a buffer overflow */
         snprintf((const char*)numStr, 4095, "result_%lu.csv", (size_t)serialNumber);
         #else
-        sprintf((const char*)numStr, "result_%lu.csv", (size_t)serialNumber)
+        sprintf((const char*)numStr, "result_%lu.csv", (size_t)serialNumber);
         #endif
 
         solvedTable = fopen((const char*)numStr, "r");
